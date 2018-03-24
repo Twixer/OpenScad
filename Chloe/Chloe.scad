@@ -20,12 +20,12 @@ module chloe(letters = "CHLOE", size = 100) {
     }
 }
 
-module lettre(letter="C", size = 100) {
+module letter(l="C", size = 100) {
     translate([- letter_h / 2, size / 2 + letter_h / 2, -letter_h / 2]) 
         color("Purple")
         minkowski() {
             linear_extrude(height = letter_h)
-                text(letter, 
+                text(l, 
                  //size=size*22/30,
                  size=size,
                  font="Niconne",
@@ -35,19 +35,20 @@ module lettre(letter="C", size = 100) {
         }
 }
 
+module letter_with_hole(l = "L", size = 100, support = 10) {
+    echo(l);
+    difference() {
+        letter(l = l, size = size);
+        #translate([0, support - 3.5, 0])
+            rotate([ 90, 0, 0]) {
+                cylinder(d=support, h  = support);
+            }
+    }
+}
+
 // Unit Test
 //chloe();
 //lettre(letter = "L", size = size);
+letter_with_hole(l="O");
 
-//$dimensionDe = 40;
-//$diametreMarquage = $dimensionDe + 0.3;
-//$fn = 120;
-//
-difference() {
-    lettre(letter = "L", size = size);
-    translate([0, support - 2, 0])
-        rotate([ 90, 0, 0]) {
-            cylinder(d=support, h  = support);
-        }
-}
 
