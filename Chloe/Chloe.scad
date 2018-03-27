@@ -1,7 +1,8 @@
 $fn = 50;
-letter_h = 10;
-size = 100;
-support = 10;
+print_ratio = 1;
+letter_h = 10 * print_ratio;
+size = 100 * print_ratio;
+support = 10 * print_ratio;
 
 // Font : Niconne
 // Font Palatino Linotype
@@ -39,16 +40,48 @@ module letter_with_hole(l = "L", size = 100, support = 10) {
     echo(l);
     difference() {
         letter(l = l, size = size);
-        #translate([0, support - 3.5, 0])
-            rotate([ 90, 0, 0]) {
-                cylinder(d=support, h  = support);
-            }
+        if (l != "H") {
+            #translate([0, support - 3.5, 0])
+                rotate([ 90, 0, 0]) {
+                    cylinder(d=support, h  = support);
+                }
+        } else { 
+            #translate([3 * support, support - 3.5, 0])
+                rotate([ 90, 0, 0]) {
+                    cylinder(d=support, h  = support);
+                } 
+            #translate([-3.5 * support, support - 3.5, 0])
+                rotate([ 90, 0, 0]) {
+                    cylinder(d=support, h  = support);
+                }                 
+        }
     }
 }
+
+module generate_support(size_L = 10, size_l = 3, size_h = 1, support = 10) {
+    union() {
+        cube([size_l, size_L, size_H], center = true);
+        rotate([0, 0, 90])
+            cube([size_l, size_L, size_H], center = true);
+        cylinder(d=support - 1, h=support);    
+    }
+}
+
 
 // Unit Test
 //chloe();
 //lettre(letter = "L", size = size);
-letter_with_hole(l="O");
 
+// Lettter
+letter_with_hole(l="H");
+// Support
+generate_support(size_L = size * 0.70, size_l = letter_h * 1.3, support = support);
 
+// Letter and support
+//letter_with_hole(l="H");
+//translate([3 * support, support - 20, 0])
+//    rotate([ -90, 0, 0]) {
+//        generate_support(size_L = size * 0.70, size_l = letter_h * 1.3, support = support);
+//    }
+
+   
